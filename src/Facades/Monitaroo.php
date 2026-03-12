@@ -6,7 +6,6 @@ namespace Monitaroo\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Monitaroo\Client;
-use Monitaroo\Logger;
 
 /**
  * @method static void trace(string $message, array $context = [])
@@ -22,7 +21,7 @@ use Monitaroo\Logger;
  * @method static void histogram(string $name, float $value, array $tags = [])
  * @method static callable startTimer(string $name, array $tags = [])
  * @method static void flush()
- * @method static Logger getLogger()
+ * @method static \Monitaroo\Logger getLogger()
  *
  * @see \Monitaroo\Client
  */
@@ -30,8 +29,10 @@ class Monitaroo extends Facade
 {
     /**
      * Get the registered name of the component.
+     *
+     * @return string
      */
-    protected static function getFacadeAccessor(): string
+    protected static function getFacadeAccessor()
     {
         return Client::class;
     }

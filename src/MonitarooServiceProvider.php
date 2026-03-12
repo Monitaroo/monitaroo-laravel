@@ -12,8 +12,10 @@ class MonitarooServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
+     *
+     * @return void
      */
-    public function register(): void
+    public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/monitaroo.php', 'monitaroo');
 
@@ -24,14 +26,18 @@ class MonitarooServiceProvider extends ServiceProvider
                 throw new \RuntimeException('Monitaroo API key is required. Set MONITAROO_API_KEY in your .env file.');
             }
 
+            $appName = $app['config']['app.name'];
+            $appEnv = $app->environment();
+            $hostname = gethostname();
+
             return Monitaroo::init([
                 'apiKey' => $config['api_key'],
-                'endpoint' => $config['endpoint'] ?? 'https://api.monitaroo.com',
-                'service' => $config['service'] ?? $app['config']['app.name'] ?? 'laravel',
-                'environment' => $config['environment'] ?? $app->environment(),
-                'host' => $config['host'] ?? gethostname() ?: '',
-                'batchSize' => $config['batch_size'] ?? 100,
-                'autoFlush' => $config['auto_flush'] ?? true,
+                'endpoint' => isset($config['endpoint']) ? $config['endpoint'] : 'https://api.monitaroo.com',
+                'service' => isset($config['service']) ? $config['service'] : ($appName ?: 'laravel'),
+                'environment' => isset($config['environment']) ? $config['environment'] : $appEnv,
+                'host' => isset($config['host']) ? $config['host'] : ($hostname ?: ''),
+                'batchSize' => isset($config['batch_size']) ? $config['batch_size'] : 100,
+                'autoFlush' => isset($config['auto_flush']) ? $config['auto_flush'] : true,
             ]);
         });
 
@@ -41,8 +47,10 @@ class MonitarooServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -59,9 +67,9 @@ class MonitarooServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      *
-     * @return array<string>
+     * @return array
      */
-    public function provides(): array
+    public function provides()
     {
         return [
             Client::class,

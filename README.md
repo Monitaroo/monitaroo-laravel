@@ -13,7 +13,7 @@ Official Laravel SDK for [Monitaroo](https://monitaroo.com) - Logs, Metrics & Mo
 composer require monitaroo/monitaroo-laravel
 ```
 
-**Requirements:** PHP 8.0+, Laravel 9+
+**Requirements:** PHP 7.3+ (v1.x) or PHP 8.0+ (v2.x), Laravel 8+
 
 ## Configuration
 

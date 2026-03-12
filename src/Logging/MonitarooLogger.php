@@ -28,10 +28,10 @@ class MonitarooLogger
      * @param array $config
      * @return Logger
      */
-    public function __invoke(array $config): Logger
+    public function __invoke(array $config)
     {
         $client = app(Client::class);
-        $level = $config['level'] ?? 'debug';
+        $level = isset($config['level']) ? $config['level'] : 'debug';
 
         $handler = new MonitarooHandler($client, $level);
 
